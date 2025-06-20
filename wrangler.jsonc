@@ -8,8 +8,9 @@
 	"main": "src/index.js",
 	"compatibility_date": "2024-11-11",
 	"observability": {
-		"enabled": true
-	}
+		"enabled": true,
+		"level": "verbose"
+	},
 	/**
 	 * Smart Placement
 	 * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
@@ -27,7 +28,11 @@
 	 * Environment Variables
 	 * https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
 	 */
-	// "vars": { "MY_VARIABLE": "production_value" },
+	"vars": {
+		"SEARCH_RATE_LIMIT": "30",
+		"FETCH_RATE_LIMIT": "20",
+		"DEBUG": "true"
+	},
 	/**
 	 * Note: Use secrets to store sensitive data.
 	 * https://developers.cloudflare.com/workers/configuration/secrets/
@@ -43,5 +48,12 @@
 	 * Service Bindings (communicate between multiple Workers)
 	 * https://developers.cloudflare.com/workers/wrangler/configuration/#service-bindings
 	 */
-	// "services": [{ "binding": "MY_SERVICE", "service": "my-service" }]
+	// "services": [{ "binding": "MY_SERVICE", "service": "my-service" }],
+
+	"kv_namespaces": [
+		{
+			"binding": "DEBUG_HTML",
+			"id": "6eaed1055142405f9dab80259f1cb686"
+		}
+	]
 }
