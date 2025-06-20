@@ -8,8 +8,7 @@
 	"main": "src/index.js",
 	"compatibility_date": "2024-11-11",
 	"observability": {
-		"enabled": true,
-		"level": "verbose"
+		"enabled": true
 	},
 	/**
 	 * Smart Placement
@@ -30,8 +29,7 @@
 	 */
 	"vars": {
 		"SEARCH_RATE_LIMIT": "30",
-		"FETCH_RATE_LIMIT": "20",
-		"DEBUG": "true"
+		"FETCH_RATE_LIMIT": "20"
 	},
 	/**
 	 * Note: Use secrets to store sensitive data.
@@ -49,11 +47,4 @@
 	 * https://developers.cloudflare.com/workers/wrangler/configuration/#service-bindings
 	 */
 	// "services": [{ "binding": "MY_SERVICE", "service": "my-service" }],
-
-	"kv_namespaces": [
-		{
-			"binding": "DEBUG_HTML",
-			"id": "6eaed1055142405f9dab80259f1cb686"
-		}
-	]
 }
