@@ -1,0 +1,22 @@
+name = "duckduckgo-api"
+main = "src/index.js"
+compatibility_date = "2026-04-17"
+
+[placement]
+mode = "smart"
+
+[[routes]]
+pattern = "duckapi.102465.xyz"
+custom_domain = true
+
+[observability]
+[observability.logs]
+enabled = true
+invocation_logs = true
+
+[observability.traces]
+enabled = true
+
+[vars]
+SEARCH_RATE_LIMIT = "30"
+FETCH_RATE_LIMIT = "20"

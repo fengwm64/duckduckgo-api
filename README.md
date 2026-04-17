@@ -1,89 +1,73 @@
-# DuckDuckGo API & 网页爬取工具
+# DuckDuckGo API
 
-这个项目提供了两个主要功能：一个基于DuckDuckGo的搜索API和一个网页内容提取工具。
+基于 Cloudflare Workers 的轻量接口，提供 DuckDuckGo 搜索结果提取、网页正文抓取，以及健康检查。
 
-## 功能
+## API
 
-### 搜索 API
-使用DuckDuckGo搜索引擎提取搜索结果，返回JSON格式的结构化数据。
+### `GET /health`
 
-### 网页提取 API
-提取网页主要内容，去除广告、导航和其他非核心内容，返回纯文本结果。
+返回服务状态。
 
-## API 端点
-
-### 1. 搜索 API
-```
-GET /search?query=关键词&max_results=10
-```
-
-**参数：**
-- `query` (必需)：搜索关键词
-- `max_results` (可选)：返回的最大结果数，默认为10
-
-**响应示例：**
 ```json
 {
-  "results": [
-    {
-      "title": "搜索结果标题",
-      "link": "https://example.com/page",
-      "snippet": "结果摘要...",
-      "position": 1
-    },
-    ...
-  ],
-  "count": 10
+  "ok": true,
+  "name": "duckduckgo-api",
+  "version": "0.1.0",
+  "timestamp": "2026-04-17T14:00:00.000Z"
 }
 ```
 
-### 2. 网页提取 API
-```
-GET /fetch?url=https://example.com/article
+### `GET /search?query=关键词&max_results=10`
+
+- `query`：必填，搜索关键词
+- `max_results`：可选，范围 `1-20`，默认 `10`
+
+```json
+{
+  "query": "cloudflare",
+  "count": 1,
+  "results": [
+    {
+      "title": "Cloudflare Docs",
+      "link": "https://developers.cloudflare.com",
+      "snippet": "Cloudflare documentation home.",
+      "position": 1
+    }
+  ]
+}
 ```
 
-**参数：**
-- `url` (必需)：要提取内容的网页URL
+### `GET /fetch?url=https://example.com/article`
 
-**响应示例：**
+- `url`：必填，仅支持 `http` / `https`
+
 ```json
 {
   "url": "https://example.com/article",
   "content": "提取的正文内容...",
+  "content_type": "text/html; charset=utf-8",
   "length": 2062
 }
 ```
 
-## 使用示例
+## 使用
 
-### 搜索示例
 ```bash
-curl "https://your-worker.workers.dev/search?query=cloudflare+workers"
+npm install
+npm test
+npm run deploy
 ```
 
-### 网页提取示例
+## 域名与部署
+
+- 自定义域名：`https://duckapi.102465.xyz`
+- Wrangler 配置已切换到 `wrangler.toml`
+- 已开启 Smart Placement、日志和 traces
+
+## 示例
+
 ```bash
-curl "https://your-worker.dev/fetch?url=https://news.ycombinator.com/item?id=123456"
+curl "https://duckapi.102465.xyz/health"
+curl "https://duckapi.102465.xyz/search?query=cloudflare+workers&max_results=5"
+curl "https://duckapi.102465.xyz/fetch?url=https://news.ycombinator.com/item?id=123456"
 ```
-
-## 部署说明
-
-此项目设计用于Cloudflare Workers环境：
-
-1. 安装Wrangler CLI工具
-   ```
-   npm install -g wrangler
-   ```
-
-2. 配置wrangler.toml文件
-
-3. 部署到Cloudflare
-   ```
-   wrangler deploy
-   ```
-
-## 限制说明
-
-- 遵守DuckDuckGo的使用条款
-- 网页提取功能可能对某些网站的布局无效
-- 请合理控制请求频率
